@@ -1,0 +1,35 @@
+09:53:22:707  INFO 19820 --- [main] com.hmall.HMallApplication               : Starting HMallApplication using Java 17 on Meidaia with PID 19820 (C:\Users\meida\IdeaProjects\hmall\hm-service\target\classes started by meida in C:\Users\meida\IdeaProjects\hmall)
+09:53:22:707 DEBUG 19820 --- [main] com.hmall.HMallApplication               : Running with Spring Boot v2.7.12, Spring v5.3.27
+09:53:22:708  INFO 19820 --- [main] com.hmall.HMallApplication               : The following 1 profile is active: "local"
+09:53:23:603  INFO 19820 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+09:53:23:607  INFO 19820 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+09:53:23:658  INFO 19820 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 30 ms. Found 0 Redis repository interfaces.
+09:53:24:384  INFO 19820 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+09:53:24:395  INFO 19820 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+09:53:24:395  INFO 19820 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.75]
+09:53:24:548  INFO 19820 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+09:53:24:548  INFO 19820 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1792 ms
+09:53:26:157  INFO 19820 --- [main] pertySourcedRequestMappingHandlerMapping : Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2ControllerWebMvc#getDocumentation(String, HttpServletRequest)]
+09:53:26:603  INFO 19820 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+09:53:26:605  INFO 19820 --- [main] d.s.w.p.DocumentationPluginsBootstrapper : Documentation plugins bootstrapped
+09:53:26:607  INFO 19820 --- [main] d.s.w.p.DocumentationPluginsBootstrapper : Found 1 custom documentation plugin(s)
+09:53:26:639  INFO 19820 --- [main] s.d.s.w.s.ApiListingReferenceScanner     : Scanning for api listing references
+09:53:26:831  INFO 19820 --- [main] com.hmall.HMallApplication               : Started HMallApplication in 4.617 seconds (JVM running for 6.18)
+09:53:32:046  INFO 19820 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+09:53:32:046  INFO 19820 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+09:53:32:047  INFO 19820 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+09:53:32:158  WARN 19820 --- [http-nio-8080-exec-1] c.b.m.c.t.support.ReflectLambdaMeta      : Unable to make field private final java.lang.Class java.lang.invoke.SerializedLambda.capturingClass accessible: module java.base does not "opens java.lang.invoke" to unnamed module @3cda1055
+09:53:32:216  INFO 19820 --- [http-nio-8080-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+09:53:32:531  INFO 19820 --- [http-nio-8080-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+09:53:32:539 DEBUG 19820 --- [http-nio-8080-exec-1] c.h.m.ItemMapper.selectPage_mpCount      : ==>  Preparing: SELECT COUNT(*) AS total FROM item WHERE (status = ?)
+09:53:32:561 DEBUG 19820 --- [http-nio-8080-exec-1] c.h.m.ItemMapper.selectPage_mpCount      : ==> Parameters: 1(Integer)
+09:53:32:599 DEBUG 19820 --- [http-nio-8080-exec-1] c.h.m.ItemMapper.selectPage_mpCount      : <==      Total: 1
+09:53:32:614 DEBUG 19820 --- [http-nio-8080-exec-1] com.hmall.mapper.ItemMapper.selectPage   : ==>  Preparing: SELECT id, name, price, stock, image, category, brand, spec, sold, comment_count, isAD, status, create_time, update_time, creater, updater FROM item WHERE (status = ?) ORDER BY update_time DESC LIMIT ?
+09:53:32:615 DEBUG 19820 --- [http-nio-8080-exec-1] com.hmall.mapper.ItemMapper.selectPage   : ==> Parameters: 1(Integer), 20(Long)
+09:53:32:770 DEBUG 19820 --- [http-nio-8080-exec-1] com.hmall.mapper.ItemMapper.selectPage   : <==      Total: 20
+09:53:34:352 DEBUG 19820 --- [http-nio-8080-exec-2] c.h.m.ItemMapper.selectPage_mpCount      : ==>  Preparing: SELECT COUNT(*) AS total FROM item WHERE (category = ? AND status = ?)
+09:53:34:353 DEBUG 19820 --- [http-nio-8080-exec-2] c.h.m.ItemMapper.selectPage_mpCount      : ==> Parameters: 手机(String), 1(Integer)
+09:53:34:378 DEBUG 19820 --- [http-nio-8080-exec-2] c.h.m.ItemMapper.selectPage_mpCount      : <==      Total: 1
+09:53:34:388 DEBUG 19820 --- [http-nio-8080-exec-2] com.hmall.mapper.ItemMapper.selectPage   : ==>  Preparing: SELECT id, name, price, stock, image, category, brand, spec, sold, comment_count, isAD, status, create_time, update_time, creater, updater FROM item WHERE (category = ? AND status = ?) ORDER BY update_time DESC LIMIT ?
+09:53:34:388 DEBUG 19820 --- [http-nio-8080-exec-2] com.hmall.mapper.ItemMapper.selectPage   : ==> Parameters: 手机(String), 1(Integer), 20(Long)
+09:53:34:483 DEBUG 19820 --- [http-nio-8080-exec-2] com.hmall.mapper.ItemMapper.selectPage   : <==      Total: 20
