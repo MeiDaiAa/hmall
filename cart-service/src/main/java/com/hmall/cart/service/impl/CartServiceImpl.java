@@ -3,7 +3,9 @@ package com.hmall.cart.service.impl;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hmall.cart.client.ItemClient;
 import com.hmall.cart.domain.dto.CartFormDTO;
+import com.hmall.cart.domain.dto.ItemDTO;
 import com.hmall.cart.domain.po.Cart;
 import com.hmall.cart.domain.vo.CartVO;
 import com.hmall.cart.mapper.CartMapper;
@@ -35,6 +37,9 @@ import java.util.stream.Collectors;
 public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements ICartService {
 
 //    private final IItemService itemService;
+
+    // 引入商品服务
+    private final ItemClient itemClient;
 
     @Override
     public void addItem2Cart(CartFormDTO cartFormDTO) {
@@ -79,10 +84,11 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements IC
 
     private void handleCartItems(List<CartVO> vos) {
         // TODO 获取商品信息
-/*        // 1.获取商品id
+        // 1.获取商品id
         Set<Long> itemIds = vos.stream().map(CartVO::getItemId).collect(Collectors.toSet());
         // 2.查询商品
-        List<ItemDTO> items = itemService.queryItemByIds(itemIds);
+//        List<ItemDTO> items = itemService.queryItemByIds(itemIds);
+        List<ItemDTO> items = itemClient.queryItemByIds(itemIds);
         if (CollUtils.isEmpty(items)) {
             return;
         }
@@ -97,7 +103,7 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements IC
             v.setNewPrice(item.getPrice());
             v.setStatus(item.getStatus());
             v.setStock(item.getStock());
-        }*/
+        }
     }
 
     @Override

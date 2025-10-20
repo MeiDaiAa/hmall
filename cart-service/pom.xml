@@ -34,17 +34,22 @@
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>3.5.3.1</version>
         </dependency>
+        <!--swagger-->
         <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-annotations</artifactId>
             <version>1.6.6</version>
             <scope>compile</scope>
         </dependency>
+        <!--openFeign-->
         <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-annotations</artifactId>
-            <version>1.6.6</version>
-            <scope>compile</scope>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <!--负载均衡器-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
         </dependency>
     </dependencies>
     <build>
