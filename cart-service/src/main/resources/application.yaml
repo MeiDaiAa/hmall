@@ -10,3 +10,5 @@ hm:
     title: 黑马商城购物车接口文档
     desc: 黑马商城购物车接口文档
     src: come.hm.cart.controller
+  cart:
+    max-capacity: 10
