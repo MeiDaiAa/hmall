@@ -25,7 +25,7 @@ public class DefaultFeignConfig {
                     return;
                 }
                 String userInfo = userId.toString();
-                requestTemplate.header("userInfo", userInfo);
+                requestTemplate.header("user-info", userInfo);
             }
         };
     }
