@@ -31,15 +31,15 @@ public class OrderController {
         return orderService.createOrder(orderFormDTO);
     }
 
-    @ApiOperation("标记订单已支付")
-    @ApiImplicitParam(name = "orderId", value = "订单id", paramType = "path")
-    @PutMapping("/{orderId}")
-    public void markOrderPaySuccess(@PathVariable("orderId") Long orderId) {
-        orderService.markOrderPaySuccess(orderId);
-    }
-    @ApiOperation("根据id修改订单")
-    @PutMapping
-    public void updateById(@RequestBody Order order) {
-        orderService.updateById(order);
-    }
+//    @ApiOperation("标记订单已支付")
+//    @ApiImplicitParam(name = "orderId", value = "订单id", paramType = "path")
+//    @PutMapping("/{orderId}")
+//    public void markOrderPaySuccess(@PathVariable("orderId") Long orderId) {
+//        orderService.markOrderPaySuccess(orderId);
+//    }
+//    @ApiOperation("根据id修改订单")
+//    @PutMapping
+//    public void updateById(@RequestBody Order order) {
+//        orderService.updateById(order);
+//    }
 }
