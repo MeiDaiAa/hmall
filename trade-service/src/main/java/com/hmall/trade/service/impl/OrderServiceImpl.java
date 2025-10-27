@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements IOrderService {
 
-//    private final IItemService itemService;
+    //    private final IItemService itemService;
     private final IOrderDetailService detailService;
 //    private final ICartService cartService;
 
@@ -93,10 +93,19 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 //            itemClient.deductStock(detailDTOS);
             // mq发送扣减库存消息
             rabbitTemplate.convertAndSend(MqConstant.CART_CLEAR_EXCHANGE, MqConstant.CART_CLEAR_KEY, detailDTOS);
-
         } catch (Exception e) {
             throw new RuntimeException("库存不足！");
         }
+        // 5. 发送延时订单消息, 检查订单支付状态
+        rabbitTemplate.convertAndSend(
+                MqConstant.ORDER_DELAY_EXCHANGE,
+                MqConstant.ORDER_DELAY_KEY,
+                order.getId(),
+                message -> {
+                    message.getMessageProperties().setDelay(MqConstant.ORDER_DELAY_TIME);
+                    return message;
+                });
+
         return order.getId();
     }
 

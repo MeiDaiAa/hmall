@@ -5,6 +5,7 @@ import com.hmall.item.domain.dto.OrderDetailDTO;
 import com.hmall.item.service.IItemService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
@@ -22,7 +23,7 @@ import java.util.List;
 public class CartClearListener {
     private final IItemService itemService;
     @RabbitListener(bindings = @QueueBinding(value = @Queue(name = MqConstant.CART_CLEAR_QUEUE, durable = "true"),
-    exchange = @Exchange(name = MqConstant.CART_CLEAR_EXCHANGE),
+    exchange = @Exchange(name = MqConstant.CART_CLEAR_EXCHANGE, type = ExchangeTypes.TOPIC),
     key = MqConstant.CART_CLEAR_KEY))
     public void listenOrderCreat(List<OrderDetailDTO> detailDtos) {
         log.info("订单创建成功，准备扣减库存：{}", detailDtos);
