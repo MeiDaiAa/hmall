@@ -7,3 +7,10 @@ hm:
     title: 黑马商城商品接口文档
     desc: 黑马商城商品接口文档
     src: come.hm.item.controller
+spring:
+  rabbitmq:
+    host: 192.168.100.128 # 虚拟机IP
+    port: 5672 # 端口
+    virtual-host: /hmall # 虚拟主机
+    username: rabbitmq # 用户名
+    password: rabbitmq # 密码

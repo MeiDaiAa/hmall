@@ -83,7 +83,7 @@
             <artifactId>seata-spring-boot-starter</artifactId>
             <version>1.6.1</version>
         </dependency>
-        <!--消息接收-->
+        <!--消息接收 && 消息发送-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-amqp</artifactId>

@@ -6,6 +6,7 @@ import com.hmall.api.client.ItemClient;
 import com.hmall.api.domain.dto.ItemDTO;
 import com.hmall.api.domain.dto.OrderDetailDTO;
 import com.hmall.api.domain.po.Order;
+import com.hmall.common.constant.MqConstant;
 import com.hmall.common.exception.BadRequestException;
 
 import com.hmall.common.utils.UserContext;
@@ -17,6 +18,7 @@ import com.hmall.trade.service.IOrderService;
 import io.seata.spring.annotation.GlobalTransactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +47,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     private final ItemClient itemClient;
     private final CartClient cartClient;
+    private final RabbitTemplate rabbitTemplate;
 
     @Override
 //    @Transactional
@@ -87,7 +90,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         // 4.扣减库存
         try {
 //            itemService.deductStock(detailDTOS);
-            itemClient.deductStock(detailDTOS);
+//            itemClient.deductStock(detailDTOS);
+            // mq发送扣减库存消息
+            rabbitTemplate.convertAndSend(MqConstant.CART_CLEAR_EXCHANGE, MqConstant.CART_CLEAR_KEY, detailDTOS);
+
         } catch (Exception e) {
             throw new RuntimeException("库存不足！");
         }
