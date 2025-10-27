@@ -81,4 +81,10 @@ public class ItemController {
     public void deductStock(@RequestBody List<OrderDetailDTO> items){
         itemService.deductStock(items);
     }
+
+    @ApiOperation("批量增加库存")
+    @PutMapping("/stock/increase")
+    public void increaseStock(@RequestBody List<OrderDetailDTO> items){
+        itemService.increaseStock(items);
+    }
 }

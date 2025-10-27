@@ -4,6 +4,7 @@ import com.hmall.api.client.PayClient;
 import com.hmall.api.domain.dto.PayOrderDTO;
 import com.hmall.api.domain.po.Order;
 import com.hmall.common.constant.MqConstant;
+import com.hmall.trade.service.IOrderDetailService;
 import com.hmall.trade.service.IOrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,12 +39,13 @@ public class OrderDelayMessageListener {
         // 需要处理
         PayOrderDTO payOrder = payClient.queryPayOrderByBizOrderNo(id);
         if (payOrder == null || payOrder.getStatus() != 3) {
-            // TODO 用户未支付, 取消订单，释放库存
+            // 用户未支付, 取消订单，释放库存
             log.info("用户未支付, 取消订单，释放库存");
-            return;
+            orderService.cancleOrder(id);
+        } else {
+            // 订单已支付
+            orderService.updateById(new Order().setId(id).setStatus(2));
+            log.info("支付成功, 订单已修改：" + id);
         }
-        // 订单已支付
-        orderService.updateById(new Order().setId(id).setStatus(2));
-        log.info("支付成功, 订单已修改：" + id);
     }
 }

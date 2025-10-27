@@ -118,6 +118,22 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         updateById(order);
     }
 
+    @Override
+    public void cancleOrder(Long id) {
+        // 取消订单
+        updateById(new Order().setId(id).setStatus(5));
+        // 恢复库存
+        List<OrderDetailDTO> orderDetailDTOS = detailService.lambdaQuery()
+                .eq(OrderDetail::getOrderId, id)
+                .list()
+                .stream()
+                .map(orderDetail -> new OrderDetailDTO()
+                        .setItemId(orderDetail.getItemId())
+                        .setNum(orderDetail.getNum()))
+                .collect(Collectors.toList());
+        itemClient.increaseStock(orderDetailDTOS);
+    }
+
     private List<OrderDetail> buildDetails(Long orderId, List<ItemDTO> items, Map<Long, Integer> numMap) {
         List<OrderDetail> details = new ArrayList<>(items.size());
         for (ItemDTO item : items) {
