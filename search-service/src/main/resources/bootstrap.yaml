@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: search-service
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      server-addr: 192.168.100.128:8848
+      config:
+        file-extension: yaml
+        shared-configs:
+          - data-id: share-jdbc.yaml # 共享数据源配置
+          - data-id: share-swagger.yaml  # swagger配置
+          - data-id: share-log.yaml # log配置
+          - data-id: share-seata.yaml # 共享seata配置
