@@ -2,16 +2,20 @@ package com.hmall.item.controller;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hmall.common.constant.MqConstant;
 import com.hmall.common.domain.PageDTO;
 import com.hmall.common.domain.PageQuery;
 import com.hmall.common.utils.BeanUtils;
 import com.hmall.item.domain.dto.ItemDTO;
 import com.hmall.item.domain.dto.OrderDetailDTO;
 import com.hmall.item.domain.po.Item;
+import com.hmall.item.domain.po.ItemDoc;
 import com.hmall.item.service.IItemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +27,7 @@ import java.util.List;
 public class ItemController {
 
     private final IItemService itemService;
+    private final RabbitTemplate rabbitTemplate;
 
     @ApiOperation("分页查询商品")
     @GetMapping("/page")
@@ -47,9 +52,16 @@ public class ItemController {
 
     @ApiOperation("新增商品")
     @PostMapping
-    public void saveItem(@RequestBody ItemDTO item) {
+    public void saveItem(@RequestBody ItemDTO itemDTO) {
         // 新增
-        itemService.save(BeanUtils.copyBean(item, Item.class));
+        Item item = BeanUtils.copyBean(itemDTO, Item.class);
+        itemService.save(item);
+        // 发送消息同步更新es索引
+        rabbitTemplate.convertAndSend(
+                MqConstant.ES_EXCHANGE,
+                MqConstant.ES_INDEX_KEY,
+                BeanUtils.copyProperties(item, ItemDoc.class)
+        );
     }
 
     @ApiOperation("更新商品状态")
@@ -59,21 +71,53 @@ public class ItemController {
         item.setId(id);
         item.setStatus(status);
         itemService.updateById(item);
+
+        item = itemService.getById(id);
+        // 如果商品状态为1新增，不为1删除
+        if (status == 1) {
+            rabbitTemplate.convertAndSend(
+                    MqConstant.ES_EXCHANGE,
+                    MqConstant.ES_INDEX_KEY,
+                    BeanUtils.copyProperties(item, ItemDoc.class));
+        } else {
+            rabbitTemplate.convertAndSend(
+                    MqConstant.ES_EXCHANGE,
+                    MqConstant.ES_DELETE_KEY,
+                    id
+            );
+        }
     }
 
     @ApiOperation("更新商品")
     @PutMapping
-    public void updateItem(@RequestBody ItemDTO item) {
+    @Transactional
+    public void updateItem(@RequestBody ItemDTO itemDto) {
         // 不允许修改商品状态，所以强制设置为null，更新时，就会忽略该字段
-        item.setStatus(null);
+        itemDto.setStatus(null);
         // 更新
-        itemService.updateById(BeanUtils.copyBean(item, Item.class));
+        Item item = BeanUtils.copyBean(itemDto, Item.class);
+        itemService.updateById(item);
+
+        // 发送消息同步更新es索引
+        rabbitTemplate.convertAndSend(
+                MqConstant.ES_EXCHANGE,
+                MqConstant.ES_UPDATE_KEY,
+                BeanUtils.copyProperties(item, ItemDoc.class)
+        );
     }
 
     @ApiOperation("根据id删除商品")
     @DeleteMapping("{id}")
+    @Transactional
     public void deleteItemById(@PathVariable("id") Long id) {
         itemService.removeById(id);
+
+        // 发送消息同步更新es索引
+        rabbitTemplate.convertAndSend(
+                MqConstant.ES_EXCHANGE,
+                MqConstant.ES_DELETE_KEY,
+                id
+        );
     }
 
     @ApiOperation("批量扣减库存")

@@ -11,4 +11,4 @@ hm:
   swagger:
     title: 黑马商城用户接口文档
     desc: 黑马商城用户接口文档
-    src: come.hm.user.controller
+    src: com.hmall.user.controller

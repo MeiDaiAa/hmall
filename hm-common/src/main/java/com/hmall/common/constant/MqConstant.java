@@ -14,4 +14,12 @@ public class MqConstant {
     public static final String ORDER_DELAY_EXCHANGE = "trade.delay.direct";
     public static final String ORDER_DELAY_KEY = "trade.delay.query";
     public static final Integer ORDER_DELAY_TIME = 1_800_000;
+
+    // es
+    public static final String ES_EXCHANGE = "es.direct";
+    public static final String ES_INDEX_OR_UPDATE_QUEUE = "es.indexOrUpdate.queue";
+    public static final String ES_DELETE_QUEUE = "es.delete.queue";
+    public static final String ES_INDEX_KEY = "es.index";
+    public static final String ES_UPDATE_KEY = "es.update";
+    public static final String ES_DELETE_KEY = "es.delete";
 }

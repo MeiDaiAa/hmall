@@ -6,7 +6,7 @@ hm:
   swagger:
     title: 黑马商城搜索接口文档
     desc: 黑马商城搜索接口文档
-    src: come.hm.search.controller
+    src: com.hmall.search.controller
 spring:
   rabbitmq:
     host: 192.168.100.128 # 虚拟机IP
